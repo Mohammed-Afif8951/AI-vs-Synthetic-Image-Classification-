@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Classification Result</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'classifier/css/styles.css' %}">
+</head>
+
+<body>
+    <div class="container">
+
+        {% if file_url %}
+        <h2>Uploaded Image</h2>
+        {% comment %} <h1>Classification Result: {{ label }}</h1> {% endcomment %}
+        <img src="{{ file_url }}" alt="Uploaded Image" class="uploaded-image">
+        <h2>Prediction: {{ is_fake|yesno:"Fake,Real" }}</h2>
+
+        <!-- Show More Button -->
+        <button id="showHideButton">Show More</button>
+
+        <!-- Hidden Information -->
+        <div id="hiddenInfo" style="display: none;">
+            <h3>Debug Information:</h3>
+            <p>Preprocessed Image Shape: {{ debug.preprocessed_image_shape }}</p>
+            <p>Preprocessed Image Values (first 5): {{ debug.preprocessed_image_values }}</p>
+            <p>Prediction Output: {{ debug.prediction_output }}</p>
+        </div>
+        {% endif %}
+
+        <br>
+        <button><a href="/">Classify Another Image</a></button>
+    </div>
+</body>
+<script>
+    document.getElementById("showHideButton").addEventListener("click", function () {
+        var hiddenInfo = document.getElementById("hiddenInfo");
+        if (hiddenInfo.style.display === "none") {
+            hiddenInfo.style.display = "block";
+            this.textContent = "Show Less";
+        } else {
+            hiddenInfo.style.display = "none";
+            this.textContent = "Show More";
+        }
+    });
+</script>
+
+</html>

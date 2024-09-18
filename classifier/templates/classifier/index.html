@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Classifier</title>
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'classifier/css/styles.css' %}">
+</head> 
+<body>
+    <div class="container">
+        <h1>Upload an Image to Classify</h1>
+        <div class="upload-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-box" id="uploadBox">
+                    <p>Drag & Drop an image or <br> Click to Browse</p>
+                    {{ form.image }}
+                </div>
+                <button type="submit" id="uploadButton">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('id_image');
+        let uploadedFile = null;
+
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.classList.add('dragover');
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('dragover');
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('dragover');
+            uploadedFile = e.dataTransfer.files[0];
+            fileInput.files = e.dataTransfer.files; // Set the file input to the dropped file
+            uploadBox.querySelector('p').textContent = uploadedFile.name;
+            console.log(uploadedFile);
+        });
+
+        uploadBox.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            uploadedFile = fileInput.files[0];
+            uploadBox.querySelector('p').textContent = uploadedFile.name;
+        });
+    </script>
+</body>
+</html>
